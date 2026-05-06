@@ -436,6 +436,7 @@
     // CONFIGURACAO — VERSAO DE TESTE LOCAL
     // Em producao, ver photo_view.html
     // ================================================================
+    const GAME_ID = 'vinhos_pisa_2026';
     const APPS_SCRIPT_URL = ''; // vazio em teste — apenas loga no console
     const TEST_MODE = true;
 
@@ -552,6 +553,7 @@
 
       const payload = {
         event: 'lead',
+        game_id: GAME_ID,
         email: email,
         consent_marketing: consentMarketing.checked,
         consent_privacy: consentPrivacy.checked,
@@ -578,6 +580,7 @@
     skipBtn.addEventListener('click', () => {
       const payload = {
         event: 'skip',
+        game_id: GAME_ID,
         email: '',
         consent_marketing: false,
         consent_privacy: false,

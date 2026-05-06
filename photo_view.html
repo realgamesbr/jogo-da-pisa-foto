@@ -416,7 +416,8 @@
     // ================================================================
     // CONFIGURACAO
     // ================================================================
-    const APPS_SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT_WEB_APP';
+    const GAME_ID = 'vinhos_pisa_2026';  // deve bater com EXPECTED_GAME_ID do Apps Script
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTjvD6C5BNJ_jvPB0qqszHTNloeuoQ3zH0ENVzdbkTXe4Yq-bByLeF3HNEyDeEv9Uq/exec';
 
     // O placeholder e substituido pelo backend que gera o QR code
     const dynamicSrc = '{{media_placeholder}}';
@@ -527,6 +528,7 @@
 
       const payload = {
         event: 'lead',
+        game_id: GAME_ID,
         email: email,
         consent_marketing: consentMarketing.checked,
         consent_privacy: consentPrivacy.checked,
@@ -553,6 +555,7 @@
     skipBtn.addEventListener('click', () => {
       const payload = {
         event: 'skip',
+        game_id: GAME_ID,
         email: '',
         consent_marketing: false,
         consent_privacy: false,

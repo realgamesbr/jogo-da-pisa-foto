@@ -1,59 +1,77 @@
 /**
- * Vinhos de Portugal 2026 — Captura de Leads (Jogo da Pisa)
+ * RGS — Captura de Eventos / Leads (template reutilizavel)
  * Google Apps Script — Web App endpoint
  *
- * SETUP:
- * 1. Crie uma Google Sheet nova
- * 2. Abra Extensões > Apps Script
- * 3. Cole este código no editor
- * 4. Ajuste SHEET_NAME se mudou o nome da aba (default: "Eventos")
- * 5. Salve. Implementar > Nova implementação > Tipo: Web app
- *    - Executar como: Eu
- *    - Quem tem acesso: Qualquer pessoa
- * 6. Copie a URL do Web App e cole no HTML em APPS_SCRIPT_URL
+ * COMO REUTILIZAR PARA OUTRO GAME:
+ * 1. Duplique a planilha (Arquivo > Fazer uma copia)
+ * 2. Abra o Apps Script da copia
+ * 3. Altere apenas a constante EXPECTED_GAME_ID abaixo
+ * 4. Reimplante como novo Web App
+ * 5. Use a nova URL no HTML do novo game
  *
- * SHEET HEADERS (linha 1) — criar manualmente antes de rodar:
- * timestamp | event | email | consent_marketing | consent_privacy | photo_id | user_agent
+ * EXPECTED_GAME_ID:
+ * - Identifica o game/projeto que esta planilha aceita
+ * - Eventos com game_id diferente sao REJEITADOS (nao salvos)
+ * - Garante que cada planilha so contem dados do seu game
+ *
+ * SHEET HEADERS (linha 1):
+ * timestamp | event | game_id | email | consent_marketing | consent_privacy | photo_id | user_agent
  *
  * COLUNA "event":
  *   - "lead" = visitante deixou email
- *   - "skip" = visitante optou por nao deixar email (clicou "Nao quero")
+ *   - "skip" = visitante optou por nao deixar email
  */
 
+// ============================================================
+// CONFIGURACAO — ajustar APENAS isto ao duplicar
+// ============================================================
+const EXPECTED_GAME_ID = 'vinhos_pisa_2026';
 const SHEET_NAME = 'Eventos';
+// ============================================================
+
 
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
 
-    const event = (data.event || 'lead').toLowerCase();
+    // 1. Validar game_id — so aceita eventos do game configurado
+    if (!data.game_id || data.game_id !== EXPECTED_GAME_ID) {
+      return jsonResponse({
+        ok: false,
+        error: 'game_id invalido ou ausente. Esperado: ' + EXPECTED_GAME_ID
+      });
+    }
 
-    // Validacao: se for "lead", email obrigatorio. Se "skip", email pode estar vazio.
-    if (event === 'lead') {
-      if (!data.email || !isValidEmail(data.email)) {
-        return jsonResponse({ ok: false, error: 'Email invalido' });
-      }
-    } else if (event !== 'skip') {
+    // 2. Validar tipo de evento
+    const event = (data.event || 'lead').toLowerCase();
+    if (event !== 'lead' && event !== 'skip') {
       return jsonResponse({ ok: false, error: 'Evento desconhecido: ' + event });
     }
 
+    // 3. Se for "lead", email obrigatorio. Se "skip", pode estar vazio.
+    if (event === 'lead' && (!data.email || !isValidEmail(data.email))) {
+      return jsonResponse({ ok: false, error: 'Email invalido' });
+    }
+
+    // 4. Pegar a sheet
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (!sheet) {
       return jsonResponse({ ok: false, error: 'Sheet "' + SHEET_NAME + '" nao encontrada' });
     }
 
-    // Garante headers se a sheet estiver vazia
+    // 5. Garantir headers se sheet vazia
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
-        'timestamp', 'event', 'email', 'consent_marketing',
-        'consent_privacy', 'photo_id', 'user_agent'
+        'timestamp', 'event', 'game_id', 'email',
+        'consent_marketing', 'consent_privacy', 'photo_id', 'user_agent'
       ]);
     }
 
-    // Adiciona linha
+    // 6. Adicionar linha
     sheet.appendRow([
       data.timestamp || new Date().toISOString(),
       event,
+      data.game_id,
       (data.email || '').trim().toLowerCase(),
       data.consent_marketing === true,
       data.consent_privacy === true,
@@ -68,14 +86,21 @@ function doPost(e) {
   }
 }
 
+
 function doGet(e) {
-  // Endpoint GET so pra teste rapido
-  return jsonResponse({ ok: true, msg: 'Endpoint Vinhos de Portugal ativo' });
+  // Endpoint GET so pra teste rapido — abra a URL do Web App no browser
+  return jsonResponse({
+    ok: true,
+    msg: 'Endpoint ativo',
+    expected_game_id: EXPECTED_GAME_ID
+  });
 }
+
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim());
 }
+
 
 function jsonResponse(obj) {
   return ContentService
