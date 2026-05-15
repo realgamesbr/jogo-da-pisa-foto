@@ -58,20 +58,25 @@
       flex: 1;
     }
 
-    /* ============ TOP — 3 LOGOS ============ */
+    /* ============ TOP — 3 LOGOS EM COLUNAS IGUAIS ============ */
     .top-logos {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       width: 100%;
-      gap: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       padding: 0 4px;
     }
 
+    .top-logos-col {
+      flex: 1 1 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .logo-side {
-      max-width: 70px;
-      max-height: 60px;
+      max-width: 95px;
+      max-height: 75px;
       width: auto;
       height: auto;
       object-fit: contain;
@@ -79,11 +84,15 @@
 
     .logo-game-top {
       max-width: 130px;
-      max-height: 90px;
+      max-height: 95px;
       width: auto;
       height: auto;
       object-fit: contain;
     }
+
+    /* Na tela da foto: mantem so o logo do jogo, centralizado */
+    body.photo-mode .col-side { display: none; }
+    body.photo-mode .sponsor-bar { display: none !important; }
 
     /* ============ CARD PRINCIPAL ============ */
     .main-card {
@@ -286,6 +295,7 @@
       max-height: 75vh;
     }
 
+
     .download-wrapper {
       text-align: center;
       margin-bottom: 8px;
@@ -344,17 +354,23 @@
 
   <div class="page">
 
-    <!-- ============ TOP — 3 LOGOS ============ -->
+    <!-- ============ TOP — 3 LOGOS EM COLUNAS IGUAIS ============ -->
     <div class="top-logos">
-      <img class="logo-side"
-           src="https://realgamesstudio.com.br/images/vp26logo1-1778806338771.png"
-           alt="Rota dos Vinhos" />
-      <img class="logo-game-top"
-           src="https://realgamesstudio.com.br/images/vp26logogame-1778807588778.png"
-           alt="Jogo da Pisa da Uva" />
-      <img class="logo-side"
-           src="https://realgamesstudio.com.br/images/vp26logo2-1778806355367.png"
-           alt="Visit Porto & North Portugal" />
+      <div class="top-logos-col col-side">
+        <img class="logo-side"
+             src="https://realgamesstudio.com.br/images/vp26logo1-1778806338771.png"
+             alt="Rota dos Vinhos e do Enoturismo" />
+      </div>
+      <div class="top-logos-col col-center">
+        <img class="logo-game-top"
+             src="https://realgamesstudio.com.br/images/vp26logogame-1778807588778.png"
+             alt="Jogo da Pisa da Uva" />
+      </div>
+      <div class="top-logos-col col-side">
+        <img class="logo-side"
+             src="https://realgamesstudio.com.br/images/vp26logo2-1778806355367.png"
+             alt="Visit Porto & North Portugal" />
+      </div>
     </div>
 
     <!-- ============ FORM DE CAPTURA ============ -->
@@ -432,7 +448,7 @@
     const GAME_ID = 'vinhos_pisa_2026';
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTjvD6C5BNJ_jvPB0qqszHTNloeuoQ3zH0ENVzdbkTXe4Yq-bByLeF3HNEyDeEv9Uq/exec';
 
-    // O placeholder é substituído pelo backend que gera o QR code
+    // O placeholder é substituído pelo Content Mover ao gerar o QR (foto 1920x1080)
     const dynamicSrc = '{{media_placeholder}}';
 
     // ================================================================
@@ -484,6 +500,7 @@
     function showPhoto() {
       preparePhoto();
       formCard.style.display = 'none';
+      document.body.classList.add('photo-mode');
       photoSection.classList.add('visible');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
