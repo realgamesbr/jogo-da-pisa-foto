@@ -4,127 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jogo da Pisa — Sua Foto</title>
-  <link rel="icon" type="image/png" href="https://realgamesstudio.com.br/images/jogo_da_pisa_logo.png" />
+  <link rel="icon" type="image/png" href="https://realgamesstudio.com.br/images/vp26pisadauva-1778806378535.png" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet" />
 
   <!--
     ================================================================
-    CONFIGURACAO — SUBSTITUIR ANTES DE PUBLICAR
+    CONFIGURACAO — ajustes em produção em produção
     ================================================================
-    1) APPS_SCRIPT_URL: cole a URL do Web App publicado pelo Apps Script
-    2) LOGO_GAME_URL: URL hospedada do logo do jogo (atualmente local)
-    3) LOGO_CLIENT_URL: URL hospedada do logo do cliente
-    4) PHOTO_PLACEHOLDER: o {{media_placeholder}} sera trocado pelo
-       sistema que gera o link do QR code com a URL real da foto
+    - APPS_SCRIPT_URL: já preenchida com a URL do Web App
+    - GAME_ID: deve bater com EXPECTED_GAME_ID do Apps Script
+    - {{media_placeholder}} é substituído pelo pipeline ao gerar QR
     ================================================================
   -->
   <style>
     :root {
-      --wine: #5C2A2A;
-      --wine-dark: #3D1A1A;
-      --plum: #694C5B;
-      --peach: #F5C9A1;
-      --cream: #F4E4C9;
-      --olive: #5D6A2C;
+      --wine-deep: #2A0F12;
+      --wine: #4A1C20;
+      --wine-card: #3A1518;
       --gold: #C9A96E;
-      --bg: #2A1414;
-      --text-dark: #2A1414;
-      --text-light: #F4E4C9;
-      --error: #C62828;
+      --gold-bright: #E0B97A;
+      --cream: #F4E4C9;
+      --cream-soft: #E8D5B0;
+      --text-dark: #2A0F12;
+      --error: #E57373;
     }
 
     * { box-sizing: border-box; }
+
+    html, body { height: auto; }
 
     body {
       margin: 0;
       padding: 0;
       font-family: 'Libre Baskerville', Georgia, serif;
       background:
-        radial-gradient(ellipse at top, rgba(105,76,91,0.4) 0%, transparent 60%),
-        radial-gradient(ellipse at bottom, rgba(92,42,42,0.6) 0%, transparent 70%),
-        linear-gradient(180deg, var(--wine-dark) 0%, var(--bg) 100%);
+        radial-gradient(ellipse at top, rgba(74, 28, 32, 0.5) 0%, transparent 60%),
+        linear-gradient(180deg, var(--wine-deep) 0%, #1A0608 100%);
       background-attachment: fixed;
-      color: var(--text-light);
+      color: var(--cream);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 16px 40px;
     }
 
-    /* Header com logos */
-    .header {
+    .page {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 0;
+      flex: 1;
+    }
+
+    /* ============ TOP — 3 LOGOS ============ */
+    .top-logos {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 24px;
-      margin: 8px 0 24px;
+      justify-content: space-between;
       width: 100%;
-      max-width: 380px;
-    }
-
-    .logo-game {
-      max-width: 180px;
-      max-height: 110px;
-      width: auto;
-      height: auto;
-    }
-
-    .logo-client {
-      max-width: 80px;
-      max-height: 80px;
-      width: auto;
-      height: auto;
-      opacity: 0.95;
-    }
-
-    /* Container principal */
-    .container {
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-    }
-
-    /* Card do form */
-    .form-card {
-      background: rgba(20, 8, 8, 0.6);
-      border: 1px solid var(--gold);
-      border-radius: 6px;
-      padding: 24px 20px;
+      gap: 8px;
       margin-bottom: 20px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      padding: 0 4px;
+    }
+
+    .logo-side {
+      max-width: 70px;
+      max-height: 60px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .logo-game-top {
+      max-width: 130px;
+      max-height: 90px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* ============ CARD PRINCIPAL ============ */
+    .main-card {
+      background: var(--wine-card);
+      border: 1px solid rgba(201, 169, 110, 0.35);
+      border-radius: 4px;
+      width: 100%;
+      padding: 24px 22px 20px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+      margin-bottom: 16px;
     }
 
     .form-title {
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 22px;
-      color: var(--peach);
-      margin: 0 0 8px;
-      letter-spacing: 1px;
+      font-size: 20px;
+      color: var(--cream);
+      margin: 0 0 10px;
+      letter-spacing: 1.5px;
+      text-align: center;
+      text-transform: uppercase;
     }
 
     .form-subtitle {
-      font-size: 14px;
+      font-size: 13px;
       line-height: 1.5;
-      color: var(--cream);
-      opacity: 0.85;
+      color: var(--cream-soft);
+      text-align: center;
       margin: 0 0 20px;
+      padding: 0 8px;
     }
 
-    /* Input email */
+    /* ============ FORM ============ */
     .input-wrapper {
       margin-bottom: 16px;
-      text-align: left;
     }
 
     .input-label {
       display: block;
       font-family: 'Cinzel', serif;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 1.5px;
+      color: var(--cream);
+      letter-spacing: 2px;
       margin-bottom: 6px;
       text-transform: uppercase;
     }
@@ -133,28 +136,35 @@
       width: 100%;
       padding: 12px 14px;
       font-family: 'Libre Baskerville', serif;
-      font-size: 15px;
-      color: var(--text-light);
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(201, 169, 110, 0.4);
-      border-radius: 4px;
+      font-size: 14px;
+      color: var(--cream);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(201, 169, 110, 0.3);
+      border-radius: 3px;
       outline: none;
       transition: border-color 0.2s;
     }
 
     .input-email:focus {
       border-color: var(--gold);
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
     }
 
     .input-email::placeholder {
-      color: rgba(244, 228, 201, 0.4);
+      color: rgba(244, 228, 201, 0.35);
+      font-style: italic;
     }
 
-    /* Checkboxes */
+    .error-msg {
+      color: var(--error);
+      font-size: 11px;
+      margin-top: 4px;
+      min-height: 14px;
+    }
+
+    /* ============ CHECKBOXES ============ */
     .checkbox-group {
-      margin: 16px 0;
-      text-align: left;
+      margin: 14px 0 18px;
     }
 
     .checkbox-row {
@@ -167,45 +177,38 @@
 
     .checkbox-row input[type="checkbox"] {
       flex-shrink: 0;
-      margin-top: 3px;
-      width: 18px;
-      height: 18px;
+      margin-top: 2px;
+      width: 16px;
+      height: 16px;
       accent-color: var(--gold);
       cursor: pointer;
     }
 
     .checkbox-label {
-      font-size: 12px;
+      font-size: 11.5px;
       line-height: 1.4;
-      color: var(--cream);
-      opacity: 0.9;
+      color: var(--cream-soft);
     }
 
     .checkbox-label a {
-      color: var(--gold);
+      color: var(--gold-bright);
       text-decoration: underline;
     }
 
-    /* Botões */
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
+    /* ============ BUTTONS ============ */
     .btn {
-      padding: 14px 20px;
+      width: 100%;
+      padding: 14px 18px;
       font-family: 'Cinzel', serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       border: none;
-      border-radius: 4px;
+      border-radius: 3px;
       cursor: pointer;
       transition: all 0.2s;
-      width: 100%;
+      margin-bottom: 10px;
     }
 
     .btn-primary {
@@ -214,20 +217,19 @@
     }
 
     .btn-primary:hover:not(:disabled) {
-      background: var(--peach);
-      transform: translateY(-1px);
+      background: var(--gold-bright);
     }
 
     .btn-primary:disabled {
-      background: rgba(201, 169, 110, 0.3);
-      color: rgba(42, 20, 20, 0.5);
+      background: rgba(201, 169, 110, 0.25);
+      color: rgba(42, 15, 18, 0.4);
       cursor: not-allowed;
     }
 
     .btn-secondary {
       background: transparent;
-      color: var(--cream);
-      border: 1px solid rgba(244, 228, 201, 0.4);
+      color: var(--cream-soft);
+      border: 1px solid rgba(244, 228, 201, 0.35);
     }
 
     .btn-secondary:hover {
@@ -235,120 +237,128 @@
       background: rgba(244, 228, 201, 0.05);
     }
 
-    /* Mensagem de erro */
-    .error-msg {
-      color: var(--error);
-      font-size: 12px;
-      margin-top: 6px;
-      min-height: 16px;
+    .btn-primary.loading {
+      pointer-events: none;
+      opacity: 0.7;
     }
+    .btn-primary.loading::after { content: '...'; }
 
-    /* Photo section */
+    /* ============ PHOTO SECTION ============ */
     .photo-section {
       display: none;
+      width: 100%;
       animation: fadeIn 0.5s ease;
     }
 
-    .photo-section.visible {
-      display: block;
-    }
+    .photo-section.visible { display: block; }
 
     .photo-title {
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 20px;
-      color: var(--peach);
+      font-size: 22px;
+      color: var(--cream);
       margin: 0 0 4px;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
+      text-align: center;
+      text-transform: uppercase;
     }
 
     .photo-subtitle {
       font-size: 13px;
-      color: var(--cream);
-      opacity: 0.75;
+      color: var(--cream-soft);
+      text-align: center;
       margin: 0 0 16px;
     }
 
     .image-card {
-      border: 4px solid var(--gold);
-      border-radius: 6px;
+      border: 2px solid var(--gold);
+      border-radius: 4px;
       overflow: hidden;
       width: 100%;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.6);
+      margin-bottom: 16px;
     }
 
     #dynamicImage {
       width: 100%;
       height: auto;
       display: block;
-      max-height: 70vh;
+      max-height: 75vh;
     }
 
     .download-wrapper {
       text-align: center;
-      margin: 16px 0 8px;
+      margin-bottom: 8px;
     }
 
     .btn-download {
       display: inline-block;
-      padding: 12px 32px;
+      width: 100%;
+      padding: 14px 32px;
       background: var(--gold);
       color: var(--text-dark);
       font-family: 'Cinzel', serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       text-decoration: none;
-      border-radius: 4px;
+      border-radius: 3px;
       transition: all 0.2s;
+      box-sizing: border-box;
     }
 
-    .btn-download:hover {
-      background: var(--peach);
-    }
+    .btn-download:hover { background: var(--gold-bright); }
 
+    /* ============ FOOTER ============ */
     .footer-text {
       text-align: center;
-      font-size: 11px;
-      color: var(--cream);
+      font-size: 10px;
+      color: var(--cream-soft);
       opacity: 0.55;
-      margin-top: 24px;
+      margin: 14px 0 18px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ============ BARRA DE PATROCINADORES (rodapé) ============ */
+    .sponsor-bar {
+      width: 100%;
+      max-width: 400px;
+      margin-top: auto;
+      padding: 12px 0 0;
+    }
+
+    .sponsor-bar img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Loading state */
-    .btn-primary.loading {
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    .btn-primary.loading::after {
-      content: '...';
     }
   </style>
 </head>
 <body>
-  <!-- Header com logos -->
-  <div class="header">
-    <img class="logo-game"
-         src="https://realgamesstudio.com.br/images/jogo_da_pisa_logo.png"
-         alt="Jogo da Pisa" />
-    <img class="logo-client"
-         src="https://realgamesstudio.com.br/images/cliente_logo_placeholder.png"
-         alt="Cliente" />
-  </div>
 
-  <div class="container">
+  <div class="page">
 
-    <!-- ================================================================
-         FORM DE CAPTURA (visivel inicialmente)
-         ================================================================ -->
-    <div id="formCard" class="form-card">
+    <!-- ============ TOP — 3 LOGOS ============ -->
+    <div class="top-logos">
+      <img class="logo-side"
+           src="https://realgamesstudio.com.br/images/vp26logo1-1778806338771.png"
+           alt="Rota dos Vinhos" />
+      <img class="logo-game-top"
+           src="https://realgamesstudio.com.br/images/vp26pisadauva-1778806378535.png"
+           alt="Jogo da Pisa da Uva" />
+      <img class="logo-side"
+           src="https://realgamesstudio.com.br/images/vp26logo2-1778806355367.png"
+           alt="Visit Porto & North Portugal" />
+    </div>
+
+    <!-- ============ FORM DE CAPTURA ============ -->
+    <div id="formCard" class="main-card">
       <h1 class="form-title">Sua foto está pronta!</h1>
       <p class="form-subtitle">
         Deixe seu email para receber novidades de Vinhos de Portugal — ou siga direto para sua foto.
@@ -382,20 +392,16 @@
           </label>
         </div>
 
-        <div class="button-group">
-          <button type="submit" id="submitBtn" class="btn btn-primary" disabled>
-            Ver Foto
-          </button>
-          <button type="button" id="skipBtn" class="btn btn-secondary">
-            Não quero deixar meu email
-          </button>
-        </div>
+        <button type="submit" id="submitBtn" class="btn btn-primary" disabled>
+          Ver Foto
+        </button>
+        <button type="button" id="skipBtn" class="btn btn-secondary">
+          Não quero deixar meu email
+        </button>
       </form>
     </div>
 
-    <!-- ================================================================
-         PHOTO SECTION (visivel apos captura ou skip)
-         ================================================================ -->
+    <!-- ============ PHOTO SECTION (visível após captura ou skip) ============ -->
     <div id="photoSection" class="photo-section">
       <h2 class="photo-title">Saúde!</h2>
       <p class="photo-subtitle">Aqui está sua foto da pisa</p>
@@ -410,16 +416,23 @@
     </div>
 
     <p class="footer-text">© Real Games Studio · Vinhos de Portugal 2026</p>
+
+  </div>
+
+  <!-- ============ BARRA DE PATROCINADORES ============ -->
+  <div class="sponsor-bar">
+    <img src="https://realgamesstudio.com.br/images/vp26barra-1778806316565.png"
+         alt="COMPETE 2030 · União Europeia" />
   </div>
 
   <script>
     // ================================================================
     // CONFIGURACAO
     // ================================================================
-    const GAME_ID = 'vinhos_pisa_2026';  // deve bater com EXPECTED_GAME_ID do Apps Script
+    const GAME_ID = 'vinhos_pisa_2026';
     const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTjvD6C5BNJ_jvPB0qqszHTNloeuoQ3zH0ENVzdbkTXe4Yq-bByLeF3HNEyDeEv9Uq/exec';
 
-    // O placeholder e substituido pelo backend que gera o QR code
+    // O placeholder é substituído pelo backend que gera o QR code
     const dynamicSrc = '{{media_placeholder}}';
 
     // ================================================================
@@ -438,18 +451,13 @@
     const downloadButton = document.getElementById('downloadButton');
 
     // ================================================================
-    // VALIDACAO E ESTADO DO BOTAO
+    // VALIDACAO
     // ================================================================
     const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    function isValidEmail(email) {
-      return EMAIL_REGEX.test(email.trim());
-    }
+    const isValidEmail = (e) => EMAIL_REGEX.test(e.trim());
 
     function updateSubmitState() {
-      const emailOk = isValidEmail(emailInput.value);
-      const privacyOk = consentPrivacy.checked;
-      submitBtn.disabled = !(emailOk && privacyOk);
+      submitBtn.disabled = !(isValidEmail(emailInput.value) && consentPrivacy.checked);
     }
 
     emailInput.addEventListener('input', () => {
@@ -458,15 +466,13 @@
     });
     emailInput.addEventListener('blur', () => {
       const v = emailInput.value.trim();
-      if (v && !isValidEmail(v)) {
-        emailError.textContent = 'Email inválido. Verifique e tente novamente.';
-      }
+      if (v && !isValidEmail(v)) emailError.textContent = 'Email inválido. Verifique e tente novamente.';
     });
     consentMarketing.addEventListener('change', updateSubmitState);
     consentPrivacy.addEventListener('change', updateSubmitState);
 
     // ================================================================
-    // FOTO — carrega no img e prepara download
+    // FOTO
     // ================================================================
     function preparePhoto() {
       dynamicImage.src = dynamicSrc;
@@ -483,13 +489,13 @@
     }
 
     // ================================================================
-    // ENVIO DE EVENTO (lead OU skip — sempre logamos pra ter contagem total)
+    // ENVIO DE EVENTO (lead OU skip)
     // ================================================================
     async function sendEvent(payload) {
       try {
         await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          mode: 'no-cors', // Apps Script Web App nao retorna CORS, mas aceita o POST
+          mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify(payload)
         });
@@ -501,7 +507,6 @@
     }
 
     function getPhotoId() {
-      // Pega ID da foto da URL (filename) ou query param
       const params = new URLSearchParams(window.location.search);
       if (params.has('id')) return params.get('id');
       const fname = window.location.pathname.split('/').pop() || '';
@@ -519,9 +524,7 @@
         emailError.textContent = 'Email inválido.';
         return;
       }
-      if (!consentPrivacy.checked) {
-        return; // botao ja esta disabled, mas safety
-      }
+      if (!consentPrivacy.checked) return;
 
       submitBtn.classList.add('loading');
       submitBtn.textContent = 'Enviando';
@@ -537,20 +540,14 @@
         user_agent: navigator.userAgent
       };
 
-      // Marca local pra nao pedir de novo se voltar
-      try {
-        localStorage.setItem('vp_lead_submitted_' + getPhotoId(), '1');
-      } catch (_) {}
+      try { localStorage.setItem('vp_lead_submitted_' + getPhotoId(), '1'); } catch (_) {}
 
-      // Dispara fire-and-forget — usuario nao precisa esperar resposta
       sendEvent(payload);
-
-      // Mostra a foto imediatamente
       showPhoto();
     });
 
     // ================================================================
-    // SKIP — pula sem deixar email (mas loga evento pra contagem total)
+    // SKIP — pula sem deixar email (mas loga skip)
     // ================================================================
     skipBtn.addEventListener('click', () => {
       const payload = {
@@ -564,31 +561,20 @@
         user_agent: navigator.userAgent
       };
 
-      try {
-        localStorage.setItem('vp_lead_skipped_' + getPhotoId(), '1');
-      } catch (_) {}
+      try { localStorage.setItem('vp_lead_skipped_' + getPhotoId(), '1'); } catch (_) {}
 
       sendEvent(payload);
       showPhoto();
     });
 
     // ================================================================
-    // INICIALIZACAO — se ja preencheu antes, vai direto pra foto
+    // INIT — se ja preencheu, vai direto pra foto
     // ================================================================
     (function init() {
       const id = getPhotoId();
-      const submitted = (() => {
-        try { return localStorage.getItem('vp_lead_submitted_' + id); }
-        catch (_) { return null; }
-      })();
-      const skipped = (() => {
-        try { return localStorage.getItem('vp_lead_skipped_' + id); }
-        catch (_) { return null; }
-      })();
-
-      if (submitted || skipped) {
-        showPhoto();
-      }
+      const submitted = (() => { try { return localStorage.getItem('vp_lead_submitted_' + id); } catch (_) { return null; } })();
+      const skipped = (() => { try { return localStorage.getItem('vp_lead_skipped_' + id); } catch (_) { return null; } })();
+      if (submitted || skipped) showPhoto();
     })();
   </script>
 </body>
